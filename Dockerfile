@@ -10,11 +10,11 @@ RUN apt-get update
 
 RUN apt-get install zip bash tar unzip lib32z1 lib32ncurses5 screen wget -y
 
-COPY mta-install.sh /app/
+COPY mtasa-install.sh /app/
 
-RUN chmod a+x /app/mta-install.sh
+RUN chmod a+x /app/mtasa-install.sh
 
-RUN bash /app/mta-install.sh
+RUN bash /app/mtasa-install.sh
 
 EXPOSE 22003/udp 22005 22126/udp
 
