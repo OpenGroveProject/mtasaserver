@@ -1,0 +1,5 @@
+<meta>
+    <script src="code/client.lua" type="client" />
+    <script src="code/godMode.lua" type="client" />
+    <script src="code/backend.lua" type="server" />	
+</meta>
