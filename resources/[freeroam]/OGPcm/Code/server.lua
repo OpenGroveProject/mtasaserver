@@ -1,8 +1,3 @@
---[[
-By Atton_Risk for OGP 2019
-https://github.com/AttonRisk
-]]--
-
 activeCar = 0
 
 function wipeCars()

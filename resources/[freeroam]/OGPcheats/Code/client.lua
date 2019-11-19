@@ -1,13 +1,8 @@
-hold =[[
-------------------------------------------------------------------------------------------------
---Name: OGP Cheat Menu -------------------------------------------------------------------------
---Dev: Atton Risk   ----------------------------------------------------------------------------
---Status: Development Finished and Public ------------------------------------------------------
---Year: 2013/2014/2019 ------------------------------------------------------------------------------
---Usage: OGP  --------------------------------------------
---Version: v1.3 --------------------------------------------------------------------------------
-------------------------------------------------------------------------------------------------
-]]
+--[[
+By Atton_Risk for OGP 2019
+https://github.com/AttonRisk
+2013, 2014, 2019
+]]--
 
 --[[===============================================================================================================================]]--	
 	--Gui Stuff
@@ -20,24 +15,25 @@ hold =[[
 	guiSetVisible(Agui, false)
 --[[===============================================================================================================================]]--	
 	-- More gui stuff
-	fkb = guiCreateButton(20, 35, 121, 61, "Health & Armor ", false, Agui)
-	CloseB = guiCreateButton(160, 315, 241, 111, "Close", false, Agui)
-	turboB = guiCreateButton(150, 35, 121, 61, "Car Boost", false, Agui)
-	bub = guiCreateButton(280, 35, 121, 61, "Respawn", false, Agui)
-	dmgb = guiCreateButton(150, 105, 121, 61, "Damage Proof", false, Agui)
-	blowb = guiCreateButton(20, 105, 121, 61, "Blow Car", false, Agui)
-	cloakb = guiCreateButton(280, 105, 121, 61, "Cloak", false, Agui)
-	healB = guiCreateButton(20, 175, 121, 61, "Heal", false, Agui)
-	engineB = guiCreateButton(410, 35, 121, 61, "Engine On/Off", false, Agui)
-    fixb = guiCreateButton(410, 105, 121, 61, "Fix Car", false, Agui)
-	gifb = guiCreateButton(150, 175, 121, 61, "Get Info", false, Agui)
-	CCB = guiCreateButton(280, 175, 121, 61, "Cloak Car", false, Agui)
-	stickyb = guiCreateButton(410, 175, 121, 61, "Sticky Wheel’s", false, Agui)
-	fcb = guiCreateButton(80, 245, 121, 61, "Flying Cars", false, Agui)
-	hcb = guiCreateButton(210, 245, 121, 61, "Hovercars", false, Agui)
-	sjb = guiCreateButton(340, 245, 121, 61, "Super Jump", false, Agui)
+	healBtn = guiCreateButton(20, 35, 121, 61, "Health & Armor ", false, Agui)
+	closeBtn = guiCreateButton(160, 315, 241, 111, "Close", false, Agui)
+	turboBtn = guiCreateButton(150, 35, 121, 61, "Car Boost", false, Agui)
+	respawnBtn = guiCreateButton(280, 35, 121, 61, "Respawn", false, Agui)
+	noDamageBtn = guiCreateButton(150, 105, 121, 61, "Damage Proof", false, Agui)
+	blowCarBtn = guiCreateButton(20, 105, 121, 61, "Blow Car", false, Agui)
+	cloakBtn = guiCreateButton(280, 105, 121, 61, "Cloak", false, Agui)
+	healPedBtn = guiCreateButton(20, 175, 121, 61, "Heal", false, Agui)
+	engineBtn = guiCreateButton(410, 35, 121, 61, "Engine On/Off", false, Agui)
+    fixCarBtn = guiCreateButton(410, 105, 121, 61, "Fix Car", false, Agui)
+	getInfoBtn = guiCreateButton(150, 175, 121, 61, "Get Info", false, Agui)
+	cloakCarBtn = guiCreateButton(280, 175, 121, 61, "Cloak Car", false, Agui)
+	stickBtn = guiCreateButton(410, 175, 121, 61, "Sticky Wheel’s", false, Agui)
+	flyingCarBtn = guiCreateButton(80, 245, 121, 61, "Flying Cars", false, Agui)
+	hoverCarBtn = guiCreateButton(210, 245, 121, 61, "Hovercars", false, Agui)
+	superJumpBtn = guiCreateButton(340, 245, 121, 61, "Super Jump", false, Agui)
 
 	playb = guiCreateButton(420, 315, 101, 51, "Play/Stop", false, Agui)
+--  The button below is switched off since it is not needed but may be used later
 --	stopb = guiCreateButton(420, 375, 101, 51, "Stop", false, Agui)
 	TBDEV = guiCreateEdit(10, 335, 113, 21, " MP3 URL", false, Agui)
 	guiEditSetMaxLength(TBDEV, 32767)
@@ -59,7 +55,7 @@ function flyingCars()
 		outputChatBox("Flying cars disabled!", 255, 0, 0) 
 	end
 end 
-addEventHandler("onClientGUIClick",fcb,flyingCars, false) 
+addEventHandler("onClientGUIClick",flyingCarBtn,flyingCars, false) 
 
 function hoverCars()
 	if (not hovercars) then
@@ -72,7 +68,7 @@ function hoverCars()
 		outputChatBox("Hovercars disabled!", 255, 0, 0) 
 	end
 end 
-addEventHandler("onClientGUIClick",hcb,hoverCars, false) 
+addEventHandler("onClientGUIClick",hoverCarBtn,hoverCars, false) 
 
 function extraJump()
 	if (not extrajump) then
@@ -87,7 +83,7 @@ function extraJump()
 		outputChatBox("'Roo' disabled!", 255, 0, 0) 
 	end
 end 
-addEventHandler("onClientGUIClick",sjb,extraJump, false) 
+addEventHandler("onClientGUIClick",superJumpBtn,extraJump, false) 
 
 function Aguif()
 	if (guiGetVisible(Agui)) then
@@ -101,47 +97,47 @@ end
 bindKey ("F2","down", Aguif) 
 --[[===============================================================================================================================]]--	
 
-function CCF ()
-	triggerServerEvent("aCore.cloakCar", localPlayer, localPlayer) 
+function cloakCar ()
+	triggerServerEvent("OGP.cloakCar", localPlayer, localPlayer) 
 	Aguif()
 end
-addEventHandler("onClientGUIClick",CCB,CCF, false) 
+addEventHandler("onClientGUIClick",cloakCarBtn,cloakCar, false) 
 
-function gif ()
-	triggerServerEvent("aCore.getPlayerInfo", localPlayer, localPlayer) 
+function getInfo ()
+	triggerServerEvent("OGP.getPlayerInfo", localPlayer, localPlayer) 
 end
-addEventHandler("onClientGUIClick",gifb,gif, false) 
+addEventHandler("onClientGUIClick",getInfoBtn,getInfo, false) 
 
-function FIXf ()
-	triggerServerEvent("aCore.fixPlayerCar", localPlayer, localPlayer) 
+function fixCar ()
+	triggerServerEvent("OGP.fixPlayerCar", localPlayer, localPlayer) 
 	Aguif() 
 end
-addEventHandler("onClientGUIClick",fixb,FIXf, false) 
+addEventHandler("onClientGUIClick",fixCarBtn,fixCar, false) 
 
-function Enginef ()
-	triggerServerEvent("aCore.ssEngine", localPlayer, localPlayer) 
+function engineSwitch ()
+	triggerServerEvent("OGP.switchEngine", localPlayer, localPlayer) 
 end	
-addEventHandler("onClientGUIClick",engineB,Enginef, false) 
+addEventHandler("onClientGUIClick",engineBtn,engineSwitch, false) 
 	
-function FHF ()
-	triggerServerEvent("aCore.healPlayer", localPlayer, localPlayer) 
+function healThePlayer ()
+	triggerServerEvent("OGP.healPlayer", localPlayer, localPlayer) 
 	Aguif() 
 end
-addEventHandler("onClientGUIClick", healB, FHF, false) 
+addEventHandler("onClientGUIClick", healPedBtn, healThePlayer, false) 
 
-function CloseF()
+function closeGUI()
 		guiSetVisible(Agui, false) 
 		showCursor(false) 
 end
-addEventHandler("onClientGUIClick", CloseB, CloseF, false) 
+addEventHandler("onClientGUIClick", closeBtn, closeGUI, false) 
 
-function bubF()
-	triggerServerEvent("aCore.RespawnPlayer", localPlayer, localPlayer) 
+function respawnClient()
+	triggerServerEvent("OGP.RespawnPlayer", localPlayer, localPlayer) 
 	Aguif() 
 end
-addEventHandler("onClientGUIClick", bub, bubF, false) 
+addEventHandler("onClientGUIClick", respawnBtn, respawnClient, false) 
 
-function turbof ()
+function turboSwitch ()
 	if(turboOnline) then
 		outputChatBox("Turbo Offline!",255,0,0) 
 		turboOnline = false
@@ -152,36 +148,36 @@ function turbof ()
 	end
 	Aguif() 
 end 
-addEventHandler("onClientGUIClick", turboB, turbof, false) 
+addEventHandler("onClientGUIClick", turboBtn, turboSwitch, false) 
 
-function CloakF ()
-	triggerServerEvent("aCore.cloak", localPlayer, localPlayer) 
+function cloakSwitch ()
+	triggerServerEvent("OGP.cloak", localPlayer, localPlayer) 
 	Aguif () 
 end
-addEventHandler("onClientGUIClick", cloakb, CloakF, false) 
+addEventHandler("onClientGUIClick", cloakBtn, cloakSwitch, false) 
 
-function DMGF ()
+function damageProofSwitch ()
 	-- This might be op
-    triggerServerEvent("aCore.damageProof", localPlayer, localPlayer) 
+    triggerServerEvent("OGP.damageProof", localPlayer, localPlayer) 
 	Aguif() 
 end
-addEventHandler("onClientGUIClick", dmgb, DMGF, false) 
+addEventHandler("onClientGUIClick", noDamageBtn, damageProofSwitch, false) 
 
 function fullKit ()
-	triggerServerEvent("aCore.fullKit", localPlayer, localPlayer) 
+	triggerServerEvent("OGP.giveClientFullKit", localPlayer, localPlayer) 
 	Aguif() 
 end
-addEventHandler("onClientGUIClick", fkb, fullKit, false) 
+addEventHandler("onClientGUIClick", healBtn, fullKit, false) 
 
-function blowf ()
-    triggerServerEvent("aCore.blowUpCar", localPlayer, localPlayer) 
+function blowUpCarSwitch ()
+    triggerServerEvent("OGP.clientExplodeCar", localPlayer, localPlayer) 
 	Aguif() 
 end
-addEventHandler("onClientGUIClick", blowb, blowf, false) 
+addEventHandler("onClientGUIClick", blowCarBtn, blowUpCarSwitch, false) 
 
  
 
-function radio ()
+function radioSwitch ()
 	local link = guiGetText(TBDEV) 
 		if (not rads) then
 			music = playSound(link) 
@@ -195,10 +191,10 @@ function radio ()
 		end
 	end		
 end 
-addEventHandler("onClientGUIClick", playb, radio, false) 
+addEventHandler("onClientGUIClick", playb, radioSwitch, false) 
 
 switch = {}
-function stickyf (player)
+function stickySwitch (player)
 local veh = getPedOccupiedVehicle(getLocalPlayer()) 
 	if veh then
 		if not switch[player] then
@@ -218,17 +214,11 @@ local veh = getPedOccupiedVehicle(getLocalPlayer())
 	end
 end
 
-addEventHandler("onClientGUIClick", stickyb, stickyf, false) 
+addEventHandler("onClientGUIClick", stickBtn, stickySwitch, false) 
 
 function killExit ()
 	cancelEvent() 
 end 
-
---[[
-addEventHandler("onClientVehicleExit", getRootElement() , stickyf)
-addEventHandler("onClientVehicleExit", getLocalPlayer() , killSticky)
-addCommandHandler("killsticky",killSticky)
-]]--
 
 
 --[[===============================================================================================================================]]--	

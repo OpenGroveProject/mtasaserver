@@ -2,203 +2,193 @@ hold =[[
 ------------------------------------------------------------------------------------------------
 --Name: aCore ----------------------------------------------------------------------------------
 --Dev: Atton Risk   ----------------------------------------------------------------------------
---Status: Development Finished and Public ------------------------------------------------------
 --Year: 2013/2014/2019 -------------------------------------------------------------------------
 --Usage: aCore for OGP only  -------------------------------------------------------------------
---Version: v1.4 --------------------------------------------------------------------------------
+--Version: v1.5 --------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------
 ]]
 
-f,d,a = 112,219,244 
 
-function getInfoData (plr)
-	if plr then
-		local ip = getPlayerIP(plr) 
-		local na = getPlayerName(plr) 
-		local se = getPlayerSerial(plr) 
-		if ip and na and se then
-			return ip, na, se 
-		else
-			return false 
-		end
-	end
-end 
-
-function respawn (plr)
-	if plr then
-		local x,y,z = getElementPosition(plr) 
+function clientRespawn ()
+	if client then
+		local x,y,z = getElementPosition(client) 
 			if x and y and z then
-				if spawnPlayer(plr, x, y, z) then
-					outputChatBox("You have been respawned!", plr, 0, 255,0) 
+				if spawnPlayer(client, x, y, z) then
+					outputChatBox("You have been respawned!", client, 0, 255,0) 
 				else
 			end
 		end
 	end
 end 
-addEvent("aCore.RespawnPlayer", true) 
-addEventHandler("aCore.RespawnPlayer", getRootElement(), respawn) 
+addEvent("OGP.RespawnPlayer", true) 
+addEventHandler("OGP.RespawnPlayer", getRootElement(), clientRespawn) 
 
-function GETINFO (plr)
-	local ip = getPlayerIP(plr) 
-	local na = getPlayerName(plr) 
-	local se = getPlayerSerial(plr) 
-	outputChatBox(tostring(na),plr,f,d,a) 
-	outputChatBox(tostring(se),plr,f,d,a) 
-	outputChatBox(tostring(ip),plr,f,d,a) 
+function outputClientInfo ()
+	local GIRED,GIGREEN,GIBLUE = 112,219,244 
+	local clientIp, clientName, clientSerial = getPlayerIP(client), getPlayerName(client), getPlayerSerial(client)
+	outputChatBox(tostring(clientIp),client,GIRED,GIGREEN,GIBLUE)
+	outputChatBox(tostring(clientName),client,GIRED,GIGREEN,GIBLUE) 
+	outputChatBox(tostring(clientSerial),client,GIRED,GIGREEN,GIBLUE) 
 end 
-addEvent("aCore.getPlayerInfo", true) 
-addEventHandler("aCore.getPlayerInfo", getRootElement(), GETINFO) 
+addEvent("OGP.getPlayerInfo", true) 
+addEventHandler("OGP.getPlayerInfo", getRootElement(), outputClientInfo) 
 
-function FIXCARf (plr)
-local plrveh = getPedOccupiedVehicle (plr) 
-	if (plrveh) then
-		fixVehicle(plrveh) 
+function fixClientCar ()
+	local clientclientVeh = getPedOccupiedVehicle (client) 
+	if (clientclientVeh) then
+		fixVehicle(clientclientVeh) 
 	else
-		outputChatBox("Might be a good idea to get into a car!",plr,255,0,0) 
+		outputChatBox("Might be a good idea to get into a car!",client,255,0,0) 
 	end
 end 
-addEvent("aCore.fixPlayerCar", true) 
-addEventHandler("aCore.fixPlayerCar", getRootElement(), FIXCARf) 
+addEvent("OGP.fixPlayerCar", true) 
+addEventHandler("OGP.fixPlayerCar", getRootElement(), fixClientCar) 
 
-function toggleEngine(plr)
-	local veh = getPedOccupiedVehicle(plr) 
-	if (not veh) then
+function toggleClientEngine()
+	local clientVeh = getPedOccupiedVehicle(client) 
+	if (not clientVeh) then
 		return false 
 	end
-	if (getVehicleEngineState(veh)) then
-		setVehicleEngineState(veh, false) 
-		outputChatBox("Engine OFF!", plr, 255, 0, 0) 
-		local engineStatus = false 
-	else
-		setVehicleEngineState(veh, true) 
-		outputChatBox("Engine ON!",plr, 0, 255, 0) 
-		local engineStatus = true 
+	if getPedOccupiedVehicleSeat(client) == 0 then	
+		if (getVehicleEngineState(clientVeh)) then
+			setVehicleEngineState(clientVeh, false) 
+			outputChatBox("Engine OFF!", client, 255, 0, 0) 
+			local engineStatus = false 
+		else
+			if not getVehicleEngineState(clientVeh) then
+				setVehicleEngineState(clientVeh, true) 
+				outputChatBox("Engine ON!",client, 0, 255, 0) 
+				local engineStatus = true 
+			end
+		end
 	end
 end 
-addEvent("aCore.ssEngine", true) 
-addEventHandler("aCore.ssEngine", getRootElement(), toggleEngine) 
+addEvent("OGP.switchEngine", true) 
+addEventHandler("OGP.switchEngine", getRootElement(), toggleClientEngine) 
 
-function FullHealf ()
-	setElementHealth ( source, 100 ) 
-	setPedArmor ( source, 100 ) 
+function healClient ()
+	setElementHealth ( client, 100 ) 
+	setPedArmor ( client, 100 ) 
 end
-addEvent("aCore.healPlayer", true) 
-addEventHandler("aCore.healPlayer", getRootElement(), FullHealf) 
+addEvent("OGP.healPlayer", true) 
+addEventHandler("OGP.healPlayer", getRootElement(), healClient) 
 
-function blowup ()
-	local x,y,z = getElementPosition(source) 
+function clientExplode ()
+	local x,y,z = getElementPosition(client) 
 	createExplosion(x,y,z,10) 
 end
-addEvent("aCore.blowUpPlayer", true) 
-addEventHandler("aCore.blowUpPlayer", getRootElement(), blowup) 
+addEvent("OGP.clientExplodePlayer", true) 
+addEventHandler("OGP.clientExplodePlayer", getRootElement(), clientExplode) 
 
-function Cloakf(plr)
-    if getElementAlpha(plr) == 255 then
-	       setPlayerNametagShowing(plr,false) 
-		   setElementAlpha(plr,0) 
-		   outputChatBox("You are cloaked!",plr,0,255,0) 
-		   setPlayerNametagShowing(plr,false) 
+function cloakClient()
+    if getElementAlpha(client) == 255 then
+	       setPlayerNametagShowing(client,false) 
+		   setElementAlpha(client,0) 
+		   outputChatBox("You are cloaked!",client,0,255,0) 
+		   setPlayerNametagShowing(client,false) 
     else
-	     setPlayerNametagShowing(plr,true) 
-	     setElementAlpha ( plr, 255 ) 
-		 outputChatBox("You are uncloaked!",plr,255,0,0) 
-		 setPlayerNametagShowing(plr,true) 
+	     setPlayerNametagShowing(client,true) 
+	     setElementAlpha ( client, 255 ) 
+		 outputChatBox("You are uncloaked!",client,255,0,0) 
+		 setPlayerNametagShowing(client,true) 
 	end
 end 
-addEvent("aCore.cloak", true) 
-addEventHandler("aCore.cloak", getRootElement(), Cloakf) 
+addEvent("OGP.cloak", true) 
+addEventHandler("OGP.cloak", getRootElement(), cloakClient) 
 
-function Cloakcf(plr)
-local DM = getPedOccupiedVehicle(plr)
-	if (isPedInVehicle(plr)) then 
-		if (not DM) then
+function cloakClientCar()
+	local clientCar = getPedOccupiedVehicle(client)
+	if (isPedInVehicle(client)) then 
+		if (not clientCar) then
 	    return 
     end 
-		if getElementAlpha(DM) == 255 then
-		   setElementAlpha(DM,0) 
-			outputChatBox("Your car is cloaked!",plr,0,255,0) 
-    else
-			setElementAlpha ( DM, 255 ) 
-			outputChatBox("Your car is uncloaked!",plr,255,0,0) 
+	if getPedOccupiedVehicleSeat(client) == 0 then
+			if getElementAlpha(clientCar) == 255 then
+				setElementAlpha(clientCar,0) 
+				outputChatBox("Your car is cloaked!",client,0,255,0) 
+			else
+				setElementAlpha (clientCar, 255) 
+				outputChatBox("Your car is uncloaked!",client,255,0,0) 
+			end
 		end
 	end
 end 
-addEvent("aCore.cloakCar", true) 
-addEventHandler("aCore.cloakCar", getRootElement(), Cloakcf) 
+addEvent("OGP.cloakCar", true) 
+addEventHandler("OGP.cloakCar", getRootElement(), cloakClientCar) 
 
 
-function DMGf (plr)
-local DM = getPedOccupiedVehicle(plr) 
-	if (isPedInVehicle(plr)) then 
-		if (not DM) then
-		return 
-		end 
-		if isVehicleDamageProof(DM) == false then
-			setVehicleDamageProof(DM,true) 
-			outputChatBox("Damage Proof On!",plr,0,255,0) 
-		else
-			setVehicleDamageProof(DM,false) 
-			outputChatBox("Damage Proof Off!",plr,255,0,0) 
+function dmgProofClientCar ()
+	local clientCar = getPedOccupiedVehicle(client) 
+	if (isPedInVehicle(client)) then 
+		if getPedOccupiedVehicleSeat(client) == 0 then
+			if (not clientCar) then
+				return 
+			end 
+			if isVehicleDamageProof(clientCar) == false then
+				setVehicleDamageProof(clientCar,true) 
+				outputChatBox("Damage Proof On!",client,0,255,0) 
+			else
+				setVehicleDamageProof(clientCar,false) 
+				outputChatBox("Damage Proof Off!",client,255,0,0)
+			end
 		end
 	end
 end 
-addEvent("aCore.damageProof", true) 
-addEventHandler("aCore.damageProof", getRootElement(), DMGf) 
+addEvent("OGP.damageProof", true) 
+addEventHandler("OGP.damageProof", getRootElement(), dmgProofClientCar) 
 
-function BLOWf (plr)
-local BM = getPedOccupiedVehicle (plr) 
-	if (BM) then
-		if getPedOccupiedVehicleSeat(plr) == 0 then
-			blowVehicle(BM) 
-			outputChatBox("Boom Bitch!",plr,255,0,0) 
+function blowClientCar ()
+	local clientCar = getPedOccupiedVehicle (client) 
+	if (clientCar) then
+		if getPedOccupiedVehicleSeat(client) == 0 then
+			blowVehicle(clientCar) 
+			outputChatBox("Boom Bitch!",client,255,0,0) 
 		else
-			outputChatBox("You are not in a car or in the wrong seat!",plr,255,0,0) 
+			outputChatBox("You are not in a car or in the wrong seat!",client,255,0,0) 
 		end
 	end
 end
-addEvent("aCore.blowUpCar", true) 
-addEventHandler("aCore.blowUpCar", getRootElement(), BLOWf) 
+addEvent("OGP.clientExplodeCar", true) 
+addEventHandler("OGP.clientExplodeCar", getRootElement(), blowClientCar) 
 
 
-function Gmf (thePlayer)
-    if getElementData(thePlayer,"invincible") then
-        setElementData(thePlayer,"invincible",false) 
-        outputChatBox("Godmode inactive!",thePlayer,255,0,0) 
+function setClientGodMode ()
+    if getElementData(client,"invincible") then
+        setElementData(client,"invincible",false) 
+        outputChatBox("Godmode inactive!",client,255,0,0) 
     else
-        setElementData(thePlayer,"invincible",true) 
-        outputChatBox("Godmode active!",thePlayer,0,255,0) 
+        setElementData(client,"invincible",true) 
+        outputChatBox("Godmode active!",client,0,255,0) 
     end 
 end
-addEvent("aCore.godmode", true) 
-addEventHandler("aCore.godmode", getRootElement(), Gmf) 
+addEvent("OGP.godmode", true) 
+addEventHandler("OGP.godmode", getRootElement(), setClientGodMode) 
 
-function killaPlayer (plr)
-	if plr then
-		if killPed(plr) then
-			outputChatBox("You are dead not big surprise!", plr ,0 ,255,0) 
-		else
-			-- Place Holder
+function killClient ()
+	if client then
+		if killPed(client) then
+			outputChatBox("You are dead not big surprise!",client,0,255,0) 
 		end
 	end
 end 
-addEvent("aCore.killPlayer", true) 
-addEventHandler("aCore.killPlayer", getRootElement(), killaPlayer) 
+addEvent("OGP.killPlayer", true) 
+addEventHandler("OGP.killPlayer", getRootElement(), killClient) 
 
+-- Knife, Brassknuckle, Dildo, Parachute
 local ids = {
-	{id=32},
-	{id=31},
-	{id=34},
-	{id=38},
-	{id=41},
+	{id=4},
+	{id=1},
+	{id=10},
+	{id=46},
 }
 
-function fullKit (plr)
-	for a,b in pairs(ids) do
-		setPedArmor ( plr, 100 ) 
-		giveWeapon(plr, b["id"]) 
+function giveClientFullKit ()
+	setPedArmor ( client, 100 ) 
+	for index,id in pairs(ids) do
+		giveWeapon(client, id["id"]) 
 	end
 end 
-addEvent("aCore.fullKit", true) 
-addEventHandler("aCore.fullKit", getRootElement(), fullKit) 
+addEvent("OGP.giveClientFullKit", true) 
+addEventHandler("OGP.giveClientFullKit", getRootElement(), giveClientFullKit) 
 
 

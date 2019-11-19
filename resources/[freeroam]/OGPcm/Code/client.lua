@@ -31,33 +31,36 @@ function getPositionInfrontOfElement ( element , meters )
     return posX , posY , posZ
 end
 
-local oldRamp = 0
+-- The ramp itself and the timer
+local oldRamp, rampTimer = 0
 
 function wipeRamp()
 	if isElement(oldRamp) then
 		destroyElement(oldRamp)
 	end
 end
-setTimer(wipeRamp,1000*30,0)
 
 function spawnRamp(cn,rampID)
-
-	if rampID then
-		wipeRamp()
-		if tonumber(rampID) then
-			rampID = tonumber(rampID)
-			if not (rampID > 8) then
-				if not (1 > rampID) then
-					outputChatBox(rampID)
-					outputChatBox(rampTable[rampID])
-					local x,y,z = getPositionInfrontOfElement(localPlayer,14)
-					local rx,ry,rz = getElementRotation(localPlayer)
-					oldRamp = createObject(rampTable[rampID],x,y,z,rx,ry,rz)
+	if getPedOccupiedVehicle(localPlayer) then
+		if getPedOccupiedVehicleSeat(localPlayer) == 0 then
+			if rampID then
+				killTimer(rampTimer)
+				wipeRamp()
+				if tonumber(rampID) then
+					rampID = tonumber(rampID)
+					if not (rampID > 8) then
+						if not (1 > rampID) then
+							local x,y,z = getPositionInfrontOfElement(localPlayer,14)
+							local rx,ry,rz = getElementRotation(localPlayer)
+							oldRamp = createObject(rampTable[rampID],x,y,z,rx,ry,rz)
+							rampTimer = setTimer(wipeRamp,1000*30,0)					
+						end
+					end
 				end
 			end
+		else
+			outputChatBox("Use a vaild ramp or consider using a vehicle!",255,0,0)
 		end
-	else
-		outputChatBox("Use a vaild ramp!",255,0,0)
 	end
 end
 addCommandHandler("ramp",spawnRamp)
